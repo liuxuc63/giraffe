@@ -60,6 +60,9 @@ export interface Config {
 
   // The type of the y-axis column
   yColumnType?: ColumnType
+
+  // The names of series on the y-axis
+  yColumnLabels?: string[]
 }
 
 export enum FormatterType {
@@ -254,6 +257,7 @@ export interface MosaicLayerConfig {
   fill?: string[]
   colors?: string[]
   yColumnType: ColumnType
+  yColumnLabels?: string[]
   // position?: MosaicPosition
 }
 
@@ -336,6 +340,7 @@ export interface MosaicLayerSpec {
   columnGroupMaps: {
     fill: ColumnGroupMap
   }
+  yColumnLabels: string[]
 }
 
 export interface LineLayerSpec {
@@ -404,6 +409,7 @@ export interface LayerProps {
   columnFormatter: (colKey: string) => (x: any) => string
   hoverX: number | null
   hoverY: number | null
+  yColumnLabels?: string[]
 }
 
 export interface Scale<D = any, R = any> {

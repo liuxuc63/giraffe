@@ -17,6 +17,8 @@ export const mosaicTransform = (
     xDomain
   )
 
+  const yColLabels = ['does', 'this', 'work']
+
   const [, fillColumnMap] = createGroupIDColumn(inputTable, fillColKeys)
 
   // break up into itervals while adding to table
@@ -100,6 +102,7 @@ export const mosaicTransform = (
     yColumnType: 'string',
     scales: {fill: fillScale},
     columnGroupMaps: {fill: fillColumnMap},
+    yColumnLabels: yColLabels,
   }
 }
 //TODO: fix hard-coding

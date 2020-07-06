@@ -31,6 +31,7 @@ interface DrawAxesOptions {
   yScale: Scale<number, number>
   config: SizedConfig
   yColumnType?: ColumnType
+  yColumnLabels?: string[]
 }
 
 export const drawAxes = ({
@@ -59,6 +60,7 @@ export const drawAxes = ({
     yAxisLabel,
   },
   yColumnType,
+  yColumnLabels,
 }: DrawAxesOptions) => {
   clearCanvas(canvas, width, height)
 
@@ -102,6 +104,7 @@ export const drawAxes = ({
 
   if (yColumnType === 'string') {
     //TODO: implement
+    console.log('IGNORE: yColLabels', yColumnLabels[1])
   } else {
     for (const yTick of yTicks) {
       let y
@@ -217,6 +220,7 @@ export const Axes: FunctionComponent<Props> = ({env, style}) => {
     yScale,
     config,
     yColumnType,
+    yColumnLabels,
   } = env
 
   useLayoutEffect(() => {
@@ -235,6 +239,7 @@ export const Axes: FunctionComponent<Props> = ({env, style}) => {
       yScale,
       config,
       yColumnType,
+      yColumnLabels,
     })
   }, [
     canvas.current,
@@ -251,6 +256,7 @@ export const Axes: FunctionComponent<Props> = ({env, style}) => {
     yScale,
     config,
     yColumnType,
+    yColumnLabels,
   ])
   return (
     <canvas

@@ -167,6 +167,23 @@ export class PlotEnv {
     this.config.yColumnType = columnType
   }
 
+  public get yColumnLabels(): string[] {
+    const layer: any = this.config.layers[0]
+    console.log('config layers', layer.yColumnLabels)
+    // for (let i = 0; i < this.config.layers.length; i++) {
+    //   const layer: any = this.config.layers[i]
+    //   if (layer.yColumnLabels) {
+    //     return layer.yColumnLabels
+    //   }
+    // }
+
+    return ['please', 'work']
+  }
+
+  public set yColumnLabels(newYColumnLabels: string[]) {
+    this.yColumnLabels = newYColumnLabels
+  }
+
   public get xDomain(): number[] {
     if (this.isXControlled) {
       return this.config.xDomain
@@ -281,13 +298,17 @@ export class PlotEnv {
       case LayerTypes.Mosaic: {
         const transform = this.fns.get(memoizedTransformKey, mosaicTransform)
 
-        return transform(
+        const foo = transform(
           table,
           layerConfig.x,
           this.config.xDomain,
           layerConfig.colors,
           layerConfig.fill
         )
+
+        console.log('yColLabelsPlotEnv', foo.yColumnLabels)
+
+        return foo
       }
 
       case LayerTypes.Heatmap: {
