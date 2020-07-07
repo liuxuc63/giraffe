@@ -1,7 +1,7 @@
 import {newTableFromConfig} from './newTable'
 import {getHorizontalTicks, getVerticalTicks} from './getTicks'
 import {getMargins} from './getMargins'
-import {extentOfExtents, getYAxisLabels} from './extrema'
+import {extentOfExtents} from './extrema'
 import {identityMerge} from './identityMerge'
 import {MemoizedFunctionCache} from './MemoizedFunctionCache'
 import {timeFormatter} from './formatters'
@@ -181,6 +181,11 @@ export class PlotEnv {
     console.log('this.config.yColumnLabels', this.config.yColumnLabels)
     console.log('this._yColumnLabels', this._yColumnLabels)
     return this._yColumnLabels
+
+    return this.config.layers
+      .map((_, i) => this.getSpec(i))
+      .filter(spec => spec && spec.yColumnLabels)
+      .map(spec => spec.yColumnLabels)
     // const layer: any = this.config.layers[0]
     // console.log('this.yColumnLabels', this.yColumnLabels)
     // console.log('config layers', layer.yColumnLabels)
@@ -452,24 +457,28 @@ export class PlotEnv {
   private getYColumnLabels() {
     console.log(
       'this is the string[] we want',
-      getYAxisLabels(
-        ...this.config.layers
-          .map((_, i) => this.getSpec(i))
-          .filter(spec => spec && spec.yColumnLabels)
-          .map(spec => spec.yColumnLabels)
-      ) || DEFAULT_Y_COLUMN_LABELS
+      this.config.layers
+        .map((_, i) => this.getSpec(i))
+        .filter(spec => spec && spec.yColumnLabels)
+        .map(spec => spec.yColumnLabels)
+    )
+
+    console.log(
+      'this is the string[] we are getting',
+      this.config.layers
+        .map((_, i) => this.getSpec(i))
+        .filter(spec => spec && spec.yColumnLabels)
+        .map(spec => spec.yColumnLabels) || DEFAULT_Y_COLUMN_LABELS
     )
     //const yColLabelsNew = ...this.config.layers.map((_, i) => this.getSpec(i).yColumnLabels
 
     return (
       //yColLabelsNew
       //no clue
-      getYAxisLabels(
-        ...this.config.layers
-          .map((_, i) => this.getSpec(i))
-          .filter(spec => spec && spec.yColumnLabels)
-          .map(spec => spec.yColumnLabels)
-      ) || DEFAULT_Y_COLUMN_LABELS
+      this.config.layers
+        .map((_, i) => this.getSpec(i))
+        .filter(spec => spec && spec.yColumnLabels)
+        .map(spec => spec.yColumnLabels) || DEFAULT_Y_COLUMN_LABELS
       //['lets', 'try', 'this']
     )
   }
