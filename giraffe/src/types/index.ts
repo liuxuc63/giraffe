@@ -49,6 +49,10 @@ export interface Config {
   onSetYDomain?: (yDomain: number[]) => void
   onResetYDomain?: () => void
 
+  yColumnLabels?: string[]
+  onSetYColumnLabels?: (yColumnLabels: string[]) => void
+  onResetYColumnLabels?: () => void
+
   // The legend is the tooltip that appears when hovering over data points
   legendFont?: string
   legendFontColor?: string
@@ -60,9 +64,6 @@ export interface Config {
 
   // The type of the y-axis column
   yColumnType?: ColumnType
-
-  // The names of series on the y-axis
-  yColumnLabels?: string[]
 }
 
 export enum FormatterType {
@@ -257,7 +258,7 @@ export interface MosaicLayerConfig {
   fill?: string[]
   colors?: string[]
   yColumnType: ColumnType
-  yColumnLabels?: string[]
+  yColumnLabels: string[]
   // position?: MosaicPosition
 }
 
@@ -360,6 +361,7 @@ export interface LineLayerSpec {
   columnGroupMaps: {
     fill: ColumnGroupMap
   }
+  yColumnLabels: string[]
 }
 
 export interface ScatterLayerSpec {
@@ -380,6 +382,7 @@ export interface ScatterLayerSpec {
     fill: ColumnGroupMap
     symbol: ColumnGroupMap
   }
+  yColumnLabels: string[]
 }
 
 export interface RectLayerSpec {
@@ -395,6 +398,7 @@ export interface RectLayerSpec {
   yColumnType: ColumnType
   scales: {fill: Scale<number, string>}
   columnGroupMaps: {fill?: ColumnGroupMap}
+  yColumnLabels: string[]
 }
 
 export interface LayerProps {

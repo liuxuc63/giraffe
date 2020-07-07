@@ -1,7 +1,7 @@
 import {newTableFromConfig} from './newTable'
 import {getHorizontalTicks, getVerticalTicks} from './getTicks'
 import {getMargins} from './getMargins'
-import {extentOfExtents} from './extrema'
+import {extentOfExtents, getYAxisLabels} from './extrema'
 import {identityMerge} from './identityMerge'
 import {MemoizedFunctionCache} from './MemoizedFunctionCache'
 import {timeFormatter} from './formatters'
@@ -22,7 +22,7 @@ import {
   ColumnType,
   Formatter,
   LayerSpec,
-  MosaicLayerSpec,
+  //  MosaicLayerSpec,
   LayerTypes,
   LineLayerConfig,
   Margins,
@@ -34,6 +34,7 @@ const X_DOMAIN_AESTHETICS = ['x', 'xMin', 'xMax']
 const Y_DOMAIN_AESTHETICS = ['y', 'yMin', 'yMax']
 const DEFAULT_X_DOMAIN: [number, number] = [0, 1]
 const DEFAULT_Y_DOMAIN: [number, number] = [0, 1]
+const DEFAULT_Y_COLUMN_LABELS: string[] = ['default']
 const DEFAULT_FORMATTER = x => String(x)
 const DEFAULT_TIME_FORMATTER = timeFormatter()
 
@@ -41,6 +42,7 @@ export class PlotEnv {
   private _config: SizedConfig | null = null
   private _xDomain: number[] | null = null
   private _yDomain: number[] | null = null
+  private _yColumnLabels: string[] | null = null
   private fns = new MemoizedFunctionCache()
 
   public get config(): SizedConfig | null {
@@ -169,30 +171,47 @@ export class PlotEnv {
   }
 
   public get yColumnLabels(): string[] {
-    const layer: any = this.config.layers[0]
-    console.log('config', this.config)
-    console.log('config layers', layer.yColumnLabels)
-    for (let i = 0; i < this.config.layers.length; i++) {
-      const layer: any = this.config.layers[i]
-      console.log('layer', layer)
-      // if (layer.yColumnLabels.length > 0) {
-      //   console.log('yColLabels inside if statement', layer.yColumnLabels)
-      //   return layer.yColumnLabels
-      // }
-
-      // if (layer.type === LayerTypes.Mosaic) {
-      //   const spec = this.getSpec(i)
-      //   console.log('yColLabels inside if statement', layer.yColumnLabels)
-      //   console.log('spec yCol Labels', spec.yColumnLabels)
-      //   return spec.yColumnLabels
-      // }
+    if (this.isYColumnControlled) {
+      return this.config.yColumnLabels
     }
 
-    return ['please', 'work']
+    if (!this._yColumnLabels) {
+      this._yColumnLabels = this.getYColumnLabels()
+    }
+    console.log('this.config.yColumnLabels', this.config.yColumnLabels)
+    console.log('this._yColumnLabels', this._yColumnLabels)
+    return this._yColumnLabels
+    // const layer: any = this.config.layers[0]
+    // console.log('this.yColumnLabels', this.yColumnLabels)
+    // console.log('config layers', layer.yColumnLabels)
+    // for (let i = 0; i < this.config.layers.length; i++) {
+    //   const layer: any = this.config.layers[i]
+    //   if (layer.yColumnLabels) {
+    //     return layer.yColumnLabels
+    //   }
+    //   console.log('layer', layer)
+    // if (layer.yColumnLabels.length > 0) {
+    //   console.log('yColLabels inside if statement', layer.yColumnLabels)
+    //   return layer.yColumnLabels
+    // }
+
+    // if (layer.type === LayerTypes.Mosaic) {
+    //   const spec = this.getSpec(i)
+    //   console.log('yColLabels inside if statement', layer.yColumnLabels)
+    //   console.log('spec yCol Labels', spec.yColumnLabels)
+    //   return spec.yColumnLabels
+    // }
+    // }
+
+    // return ['please', 'work']
   }
 
   public set yColumnLabels(newYColumnLabels: string[]) {
-    this.yColumnLabels = newYColumnLabels
+    if (this.isYColumnControlled) {
+      this.config.onSetYColumnLabels(newYColumnLabels)
+    } else {
+      this.yColumnLabels = newYColumnLabels
+    }
   }
 
   public get xDomain(): number[] {
@@ -309,13 +328,17 @@ export class PlotEnv {
       case LayerTypes.Mosaic: {
         const transform = this.fns.get(memoizedTransformKey, mosaicTransform)
 
-        return transform(
+        const foo = transform(
           table,
           layerConfig.x,
           this.config.xDomain,
           layerConfig.colors,
           layerConfig.fill
         )
+
+        //console.log('this', this)
+
+        return foo
       }
 
       case LayerTypes.Heatmap: {
@@ -396,6 +419,14 @@ export class PlotEnv {
     )
   }
 
+  private get isYColumnControlled() {
+    return (
+      this.config.yColumnLabels &&
+      this.config.onSetYColumnLabels &&
+      this.config.onResetYColumnLabels
+    )
+  }
+
   private getXDomain() {
     return (
       extentOfExtents(
@@ -415,6 +446,31 @@ export class PlotEnv {
           .filter(spec => spec && spec.yDomain)
           .map(spec => spec.yDomain)
       ) || DEFAULT_Y_DOMAIN
+    )
+  }
+
+  private getYColumnLabels() {
+    console.log(
+      'this is the string[] we want',
+      getYAxisLabels(
+        ...this.config.layers
+          .map((_, i) => this.getSpec(i))
+          .filter(spec => spec && spec.yColumnLabels)
+          .map(spec => spec.yColumnLabels)
+      ) || DEFAULT_Y_COLUMN_LABELS
+    )
+    //const yColLabelsNew = ...this.config.layers.map((_, i) => this.getSpec(i).yColumnLabels
+
+    return (
+      //yColLabelsNew
+      //no clue
+      getYAxisLabels(
+        ...this.config.layers
+          .map((_, i) => this.getSpec(i))
+          .filter(spec => spec && spec.yColumnLabels)
+          .map(spec => spec.yColumnLabels)
+      ) || DEFAULT_Y_COLUMN_LABELS
+      //['lets', 'try', 'this']
     )
   }
 

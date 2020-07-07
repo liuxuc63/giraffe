@@ -51,3 +51,15 @@ export const extentOfExtents = (
 
   return result
 }
+
+export const getYAxisLabels = (
+  ...data: string[][]
+): [string, string] | null => {
+  const result = extent(flatMap(data, d => extent(d)))
+
+  if (result.some(x => x === undefined)) {
+    return null
+  }
+
+  return result
+}

@@ -142,5 +142,6 @@ export const lineTransform = (
     yColumnType: table.getColumnType(yColumnKey),
     scales: {fill: fillScale},
     columnGroupMaps: {fill: fillColumnMap},
+    yColumnLabels: [],
   }
 }

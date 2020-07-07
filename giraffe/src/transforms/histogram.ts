@@ -54,6 +54,7 @@ export const histogramTransform = (
     yColumnType: 'number',
     scales: {fill: fillScale},
     columnGroupMaps: {fill: fillColumnMap},
+    yColumnLabels: [],
   }
 }
 

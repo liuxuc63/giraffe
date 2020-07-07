@@ -166,7 +166,7 @@ export const SizedPlot: FunctionComponent<Props> = ({
               height: env.innerHeight,
               yColumnType: spec.yColumnType,
               columnFormatter: env.getFormatterForColumn,
-              yColumnLabels: env.yColumnLabels,
+              yColumnLabels: spec.yColumnLabels,
             }
 
             switch (spec.type) {

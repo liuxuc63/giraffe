@@ -54,6 +54,7 @@ export const heatmapTransform = (
     yColumnType: 'number',
     scales: {fill: fillScale},
     columnGroupMaps: {},
+    yColumnLabels: [],
   }
 }
 

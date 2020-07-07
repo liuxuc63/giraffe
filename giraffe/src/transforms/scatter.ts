@@ -43,5 +43,6 @@ export const scatterTransform = (
     yColumnType: inputTable.getColumnType(yColumnKey),
     scales: {fill: fillScale, symbol: symbolScale},
     columnGroupMaps: {fill: fillColumnMap, symbol: symbolColumnMap},
+    yColumnLabels: [],
   }
 }
