@@ -409,7 +409,7 @@ export interface LayerProps {
   columnFormatter: (colKey: string) => (x: any) => string
   hoverX: number | null
   hoverY: number | null
-  yColumnLabels?: string[]
+  yColumnLabels: string[]
 }
 
 export interface Scale<D = any, R = any> {

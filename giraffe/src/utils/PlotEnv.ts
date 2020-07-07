@@ -22,6 +22,7 @@ import {
   ColumnType,
   Formatter,
   LayerSpec,
+  MosaicLayerSpec,
   LayerTypes,
   LineLayerConfig,
   Margins,
@@ -169,13 +170,23 @@ export class PlotEnv {
 
   public get yColumnLabels(): string[] {
     const layer: any = this.config.layers[0]
+    console.log('config', this.config)
     console.log('config layers', layer.yColumnLabels)
-    // for (let i = 0; i < this.config.layers.length; i++) {
-    //   const layer: any = this.config.layers[i]
-    //   if (layer.yColumnLabels) {
-    //     return layer.yColumnLabels
-    //   }
-    // }
+    for (let i = 0; i < this.config.layers.length; i++) {
+      const layer: any = this.config.layers[i]
+      console.log('layer', layer)
+      // if (layer.yColumnLabels.length > 0) {
+      //   console.log('yColLabels inside if statement', layer.yColumnLabels)
+      //   return layer.yColumnLabels
+      // }
+
+      // if (layer.type === LayerTypes.Mosaic) {
+      //   const spec = this.getSpec(i)
+      //   console.log('yColLabels inside if statement', layer.yColumnLabels)
+      //   console.log('spec yCol Labels', spec.yColumnLabels)
+      //   return spec.yColumnLabels
+      // }
+    }
 
     return ['please', 'work']
   }
@@ -298,17 +309,13 @@ export class PlotEnv {
       case LayerTypes.Mosaic: {
         const transform = this.fns.get(memoizedTransformKey, mosaicTransform)
 
-        const foo = transform(
+        return transform(
           table,
           layerConfig.x,
           this.config.xDomain,
           layerConfig.colors,
           layerConfig.fill
         )
-
-        console.log('yColLabelsPlotEnv', foo.yColumnLabels)
-
-        return foo
       }
 
       case LayerTypes.Heatmap: {

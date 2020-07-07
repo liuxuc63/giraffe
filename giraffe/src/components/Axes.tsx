@@ -104,7 +104,7 @@ export const drawAxes = ({
 
   if (yColumnType === 'string') {
     //TODO: implement
-    console.log('IGNORE: yColLabels', yColumnLabels[1])
+    console.log('IGNORE: yColLabels', yColumnLabels[0])
   } else {
     for (const yTick of yTicks) {
       let y
