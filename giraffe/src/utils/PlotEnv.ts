@@ -180,12 +180,19 @@ export class PlotEnv {
     }
     console.log('this.config.yColumnLabels', this.config.yColumnLabels)
     console.log('this._yColumnLabels', this._yColumnLabels)
-    return this._yColumnLabels
+    //return this._yColumnLabels
 
+    console.log(
+      'what does this print',
+      this.config.layers
+        .map((_, i) => this.getSpec(i))
+        .filter(spec => spec && spec.yColumnLabels)
+        .map(spec => spec.yColumnLabels)[0]
+    )
     return this.config.layers
       .map((_, i) => this.getSpec(i))
       .filter(spec => spec && spec.yColumnLabels)
-      .map(spec => spec.yColumnLabels)
+      .map(spec => spec.yColumnLabels)[0]
     // const layer: any = this.config.layers[0]
     // console.log('this.yColumnLabels', this.yColumnLabels)
     // console.log('config layers', layer.yColumnLabels)
