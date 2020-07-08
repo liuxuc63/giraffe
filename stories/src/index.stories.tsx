@@ -420,12 +420,16 @@ storiesOf('XY Plot', module)
     const y = yKnob(table, 'cpu')
     const fill = ['_value']
     const symbol = symbolKnob(table, 'host')
+    const tickFont = tickFontKnob()
+    const legendFont = legendFontKnob()
 
     const showAxes = showAxesKnob()
 
     const config: Config = {
       table: CPUString,
       showAxes,
+      tickFont,
+      legendFont,
       layers: [
         {
           type: 'mosaic',
