@@ -101,6 +101,9 @@ export const yKnob = (table: Table, initial?: string) =>
 export const fillKnob = (table: Table, initial?: string) =>
   multiSelect('fill', findStringColumns(table), initial || 'cpu')
 
+export const yKnobString = (table: Table, initial?: string) =>
+  select('y', findStringColumns(table), initial || 'cpu')
+
 export const symbolKnob = (table: Table, initial?: string) =>
   multiSelect('symbol', findStringColumns(table), initial || 'host')
 
