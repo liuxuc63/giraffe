@@ -14,7 +14,7 @@ A React-based visualization library powering the data visualizations in [InfluxD
   import {Plot, newTable} from '@influxdata/giraffe'
   </pre>
 
-2. Build the config object.  
+2. Build the config object.
    a. **Required properties**:
 
    - `table` is data built using the newTable utilty function or built from Flux results, _see_ [Flux example](./README.md#example-using-flux)
@@ -376,6 +376,8 @@ Giraffe comes with utility functions.
   - **strokeWidth**: _number. Optional._ The [_CanvasRenderingContext2D lineWidth_](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth) of the border of the bins. This is very hard to observe with human eyes unless the **fillOpacity** is near 0. A high value for **strokeWidth** will completely fill the heat bin with border color at an opacity indicated by **strokeOpacity**.
 
   - **strokePadding**: _number. Optional._ The space around all four sides of each heat bin. The amount of spacing is the _width_ and _height_ used in the [_CanvasRenderingContext2D rect_](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rect) function.
+
+- **MosaicLayerConfig**: _Object_. Maximum one per `<Plot>`. Properties are:
 
 - **GaugeLayerConfig**: _Object_. Maximum one per `<Plot>`. Properties are:
 
