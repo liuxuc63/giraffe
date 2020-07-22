@@ -10,6 +10,7 @@ import {
   ScatterLayerConfig,
   RectLayerConfig,
   MosaicLayerConfig,
+  TableLayerConfig,
   LayerTypes,
   SpecTypes,
 } from '../types'
@@ -26,6 +27,8 @@ import {useMousePos} from '../utils/useMousePos'
 import {useDragEvent} from '../utils/useDragEvent'
 import {useForceUpdate} from '../utils/useForceUpdate'
 import {LatestValueTransform} from './LatestValueTransform'
+import {FluxTablesTransform} from './FluxTablesTransform'
+import {TableGraphs} from './TableGraphs'
 import {newTableFromConfig} from '../utils/newTable'
 import {MosaicLayer} from './MosaicLayer'
 
@@ -76,6 +79,8 @@ export const SizedPlot: FunctionComponent<Props> = ({
     bottom: 0,
   }
 
+  const fluxResponse = config.fluxResponse ? config.fluxResponse : ''
+
   return (
     <div
       className="giraffe-plot"
@@ -113,6 +118,22 @@ export const SizedPlot: FunctionComponent<Props> = ({
                     height: config.height,
                   }}
                 />
+              )
+            }
+
+            if (layerConfig.type === LayerTypes.Table) {
+              return (
+                <FluxTablesTransform key={layerIndex} files={[fluxResponse]}>
+                  {tables => (
+                    <TableGraphs
+                      // tables={tables}
+                      // properties={properties}
+                      // timeZone={timeZone}
+                      // theme={theme}
+                      config={{...layerConfig, tables} as TableLayerConfig}
+                    />
+                  )}
+                </FluxTablesTransform>
               )
             }
 
@@ -193,7 +214,7 @@ export const SizedPlot: FunctionComponent<Props> = ({
                   />
                 )
 
-              case SpecTypes.Scatter: {
+              case SpecTypes.Scatter:
                 return (
                   <ScatterLayer
                     key={layerIndex}
@@ -202,9 +223,8 @@ export const SizedPlot: FunctionComponent<Props> = ({
                     config={layerConfig as ScatterLayerConfig}
                   />
                 )
-              }
 
-              case SpecTypes.Rect: {
+              case SpecTypes.Rect:
                 return (
                   <RectLayer
                     key={layerIndex}
@@ -213,7 +233,6 @@ export const SizedPlot: FunctionComponent<Props> = ({
                     config={layerConfig as RectLayerConfig}
                   />
                 )
-              }
 
               case SpecTypes.Mosaic: {
                 return (
